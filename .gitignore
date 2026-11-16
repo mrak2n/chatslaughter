@@ -1,0 +1,17 @@
+.DS_Store
+.build/
+.swiftpm/
+dist/
+.env
+.env.*
+*.xcuserstate
+xcuserdata/
+*.session*
+*.sqlite*
+*.db*
+tdlib/
+credentials*.json
+*.p12
+*.mobileprovision
+__pycache__/
+*.pyc

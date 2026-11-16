@@ -1,0 +1,27 @@
+name: macOS
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test-and-build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unit tests
+        run: ./scripts/test.sh
+      - name: Install TDLib
+        run: brew install tdlib
+      - name: TDLib lifecycle without account login
+        run: CHATSLAUGHTER_TEST_TDLIB=1 ./scripts/test.sh --filter TDLibLifecycleTests
+      - name: Bundle standalone app
+        run: ./scripts/build-app.sh
+      - name: Archive app
+        run: ditto -c -k --sequesterRsrc --keepParent dist/chatslaughter.app dist/chatslaughter-macos.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: chatslaughter-macos
+          path: |
+            dist/chatslaughter-macos.zip
+            dist/build-info.json
